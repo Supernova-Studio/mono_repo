@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
+import 'package:mono_repo/src/commands/run.dart';
 
 import 'commands/check.dart';
 import 'commands/mono_repo_command.dart';
@@ -15,7 +16,7 @@ import 'commands/travis.dart';
 import 'version.dart';
 
 final commands = List<Command<void>>.unmodifiable(
-    [CheckCommand(), PresubmitCommand(), PubCommand(), TravisCommand()]);
+    [CheckCommand(), PresubmitCommand(), PubCommand(), TravisCommand(), RunCommand()]);
 
 class MonoRepoRunner extends CommandRunner<void> {
   MonoRepoRunner()
