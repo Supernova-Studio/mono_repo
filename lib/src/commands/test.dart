@@ -6,6 +6,8 @@ import 'package:mono_repo/src/commands/mono_repo_command.dart';
 import 'package:mono_repo/src/root_config.dart';
 import 'package:path/path.dart' as p;
 
+const _coverage = "coverage";
+
 class TestCommand extends MonoRepoCommand {
   @override
   String get name => 'run_tests';
@@ -13,13 +15,17 @@ class TestCommand extends MonoRepoCommand {
   @override
   String get description => 'Runs provided command in each module';
 
+  TestCommand() {
+    this.argParser.addFlag(_coverage, defaultsTo: false);
+  }
+
   @override
   FutureOr<void> run() {
-    return test(rootConfig());
+    return test(rootConfig(), enableCoverage: argResults[_coverage] as bool);
   }
 }
 
-Future<void> test(RootConfig rootConfig) async {
+Future<void> test(RootConfig rootConfig, {bool enableCoverage = false}) async {
   final pkgDirs = rootConfig.map((pc) => pc.relativePath).toList();
 
   print(lightBlue.wrap('Running `test` across ${pkgDirs.length} package(s).'));
@@ -48,6 +54,10 @@ Future<void> test(RootConfig rootConfig) async {
 
     final executable = 'flutter';
     final args = ['test'];
+
+    if (enableCoverage) {
+      args.add("--coverage");
+    }
 
     print('');
     print(wrapWith('Starting `$executable ${args.join(' ')}` in `$dir`...', [styleBold, lightBlue]));
