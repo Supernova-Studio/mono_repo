@@ -38,7 +38,13 @@ Future<void> _run(String executable, List<String> args, RootConfig rootConfig) a
     print(wrapWith('Starting `$executable ${args.join(' ')}` in `$dir`...', [styleBold, lightBlue]));
     final workingDir = p.join(rootConfig.rootDirectory, dir);
 
-    final proc = await Process.start(executable, args, mode: ProcessStartMode.inheritStdio, workingDirectory: workingDir);
+    final proc = await Process.start(
+      executable,
+      args,
+      mode: ProcessStartMode.inheritStdio,
+      workingDirectory: workingDir,
+      runInShell: Platform.isWindows,
+    );
 
     final exit = await proc.exitCode;
 

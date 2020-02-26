@@ -111,8 +111,13 @@ Future<void> pub(
         [styleBold, lightBlue]));
     final workingDir = p.join(rootConfig.rootDirectory, dir);
 
-    final proc = await Process.start(executable, packageArgs,
-        mode: ProcessStartMode.inheritStdio, workingDirectory: workingDir);
+    final proc = await Process.start(
+      executable,
+      packageArgs,
+      mode: ProcessStartMode.inheritStdio,
+      workingDirectory: workingDir,
+      runInShell: Platform.isWindows,
+    );
 
     final exit = await proc.exitCode;
 
